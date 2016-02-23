@@ -16,6 +16,12 @@
 @property bool isSelected;
 @property bool isRemoved;
 
+@property (strong, nonatomic) SKAction *hitSound;
+@property (strong, nonatomic) SKAction *whoopSound;
+@property (strong, nonatomic) SKAction *warnSound;
+@property (strong, nonatomic) SKAction *clickSound;
+
+-(void) setHint :(BOOL)on;
 -(void) setSelected :(BOOL)isSelected;
 -(void) click;
 -(void) playClickSound;
