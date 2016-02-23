@@ -11,8 +11,12 @@
 
 @implementation NumberBubble
 
-float defaultMass = 1;
-float defaultBouncy = 0.5;
+static float defaultMass = 1;
+static float defaultBouncy = 0.5;
+static bool isClickSoundPlaying;
+static bool isHitSoundPlaying;
+static bool isWhoopSoundPlaying;
+static bool isWarnSoundPlaying;
 
 +(id)GetNumber:(int)no :(float)radius
 {
@@ -40,23 +44,60 @@ float defaultBouncy = 0.5;
 -(void) click
 {
     [self setSelected:!_isSelected];
-    SKAction *soundAction = [SKAction playSoundFileNamed:@"button-3_GSM.wav" waitForCompletion:NO];
-    //play once
-    [self runAction:soundAction];
-    //play and repeat forever
-    //[self runAction:[SKAction repeatActionForever:soundAction]];
+    [self playClickSound];
+}
+
+- (void)playClickSound
+{
+    if (!isClickSoundPlaying)
+    {
+        SKAction *soundAction = [SKAction playSoundFileNamed:@"button-3_GSM.wav" waitForCompletion:YES];
+        //play once
+        isClickSoundPlaying = true;
+        [self runAction:soundAction completion:^{ isClickSoundPlaying =false; }];
+        //play and repeat forever
+        //[self runAction:[SKAction repeatActionForever:soundAction]];
+    }
 }
 
 -(void)playHitSound
 {
-    self.physicsBody.contactTestBitMask=0;
-    SKAction *soundAction = [SKAction playSoundFileNamed:@"drop-ball-in-cup-2_GSM.wav" waitForCompletion:NO];
-    //play once
-    [self runAction:soundAction];
-    //play and repeat forever
-    //[self runAction:[SKAction repeatActionForever:soundAction]];
+    if (isHitSoundPlaying)
+        return;
+        
+    if (self.physicsBody.contactTestBitMask == 0)
+        return;
+    
+    self.physicsBody.contactTestBitMask = 0;
+    
+    SKAction *soundAction = [SKAction playSoundFileNamed:@"drop-ball-in-cup-2_GSM.wav" waitForCompletion:YES];
+    
+    isHitSoundPlaying = true;
+    [self runAction:soundAction completion:^{ isHitSoundPlaying = false; }];
     
     AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+}
+
+-(void)playWhoopSound
+{
+    if (isWhoopSoundPlaying)
+        return;
+    
+    SKAction *soundAction = [SKAction playSoundFileNamed:@"slow-whoop-bubble-pop1_GSM.wav" waitForCompletion:YES];
+    
+    isWhoopSoundPlaying = true;
+    [self runAction:soundAction completion:^{ isWhoopSoundPlaying = false; }];
+}
+
+-(void)playWarnSound
+{
+    if (isWarnSoundPlaying)
+        return;
+    
+    SKAction *soundAction = [SKAction playSoundFileNamed:@"catspaw64_warning-signal_GSM.wav" waitForCompletion:YES];
+    
+    isWarnSoundPlaying = true;
+    [self runAction:soundAction completion:^{ isWarnSoundPlaying = false; }];
 }
 
 @end

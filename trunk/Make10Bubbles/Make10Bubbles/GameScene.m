@@ -15,13 +15,20 @@
 int xMargin = 10;
 int yMargin = 40;
 
-float levelIntervalInSeconds = 2;
+float bubbleRadiusMinDivider = 4;
+float bubbleRadiusDivider = 6;
+float levelIntervalInSeconds = 3;
 CFTimeInterval updatedTime;
 
 bool gamePaused;
 bool gameOver;
 bool onMenu;
 bool onExplode;
+
+SKLabelNode* scoreLabel;
+int score;
+int nextLevelScore = 2;
+bool onScoreAction = false;
 
 AVAudioPlayer *player;
 
@@ -46,11 +53,33 @@ NSMutableArray* bubbles;
 
 -(void)createBackgroundMusic
 {
+    if (player != nil)
+    {
+        [player stop];
+        player = nil;
+    }
+    
     NSString *dataPath=[[NSBundle mainBundle] pathForResource:@"FUN_FUN_MIN_GSM" ofType:@"wav"];
     NSData* musicData = [NSData dataWithContentsOfFile:dataPath];
     player = [[AVAudioPlayer alloc] initWithData:musicData error:nil];
     player.volume = 0.5;
     player.numberOfLoops=-1;
+    [player play];
+}
+
+-(void)createBackgroundEndMusic
+{
+    if (player != nil)
+    {
+        [player stop];
+        player = nil;
+    }
+    
+    NSString *dataPath=[[NSBundle mainBundle] pathForResource:@"FUN_FUN_LK1_GSM" ofType:@"wav"];
+    NSData* musicData = [NSData dataWithContentsOfFile:dataPath];
+    player = [[AVAudioPlayer alloc] initWithData:musicData error:nil];
+    player.volume = 0.5;
+    //player.numberOfLoops=-1;
     [player play];
 }
 
@@ -124,6 +153,41 @@ NSMutableArray* bubbles;
     [_exitButton removeFromParent];
 }
 
+-(void)drawScore
+{
+    if (scoreLabel == nil)
+    {
+        float frameW = CGRectGetWidth(self.frame);
+        float frameH = CGRectGetHeight(self.frame);
+        scoreLabel =  [SKLabelNode labelNodeWithFontNamed:@"Chalkboard SE"];
+        scoreLabel.fontSize = (int)(frameH / 16);
+        scoreLabel.fontColor = [SKColor greenColor];
+        scoreLabel.position = CGPointMake(frameW / 2, frameH - yMargin / 2 - frameH / 32);
+        [self addChild:scoreLabel];
+    }
+    
+    if (!onScoreAction)
+    {
+        onScoreAction = true;
+        [scoreLabel runAction: [SKAction scaleBy:1.1 duration:0.25] completion:^{
+            scoreLabel.text = [NSString stringWithFormat:@"Score: %d", score];
+            [scoreLabel runAction: [SKAction scaleBy:0.9 duration:0.25] completion:^{ onScoreAction = false;
+            }];
+        }];
+    }
+    
+    if (nextLevelScore < score)
+        [self levelUp];
+}
+
+-(void)levelUp
+{
+    nextLevelScore *= 2;
+    levelIntervalInSeconds *= 0.8;
+    bubbleRadiusDivider -= 0.1;
+    bubbleRadiusDivider = MAX(0,bubbleRadiusDivider);
+}
+
 - (void)createBucket
 {
     float frameW = CGRectGetWidth(self.frame);
@@ -155,7 +219,7 @@ NSMutableArray* bubbles;
     
     NSMutableArray* dI = [[NSMutableArray alloc] init];
     for (NumberBubble* b in bubbles) {
-        if (b.position.x > frameW || b.position.y > frameH || b.position.x<0 || b.position.y<0)
+        if (b.position.x > frameW || b.position.y > frameH || b.position.x < 0 || b.position.y < 0)
         {
             [dI addObject:b];
         }
@@ -173,11 +237,11 @@ NSMutableArray* bubbles;
     float frameW = CGRectGetWidth(self.frame);
     float frameH = CGRectGetHeight(self.frame);
     
-    float nW = frameW / 6;
+    float nW = frameW / ((float)arc4random_uniform(10 * bubbleRadiusDivider)/10 +bubbleRadiusMinDivider);
     int no = arc4random_uniform(9)+1;
     
     NumberBubble* number = [NumberBubble GetNumber:no :nW];
-    number.position = CGPointMake(xMargin+nW/2+arc4random_uniform(frameW-2*xMargin-nW/2), frameH-yMargin-nW/2);
+    number.position = CGPointMake(xMargin+nW/2+arc4random_uniform(frameW-2*xMargin-nW), frameH-yMargin-nW/2);
 
     [self addChild:number];
     [bubbles addObject:number];
@@ -188,32 +252,46 @@ NSMutableArray* bubbles;
     onExplode = true;
     int sum = 0;
     bool explode = false;
+    bool deselect = false;
     for (NumberBubble *b in bubbles)
     {
         if (b.isSelected)
         {
             sum += b.no;
-            if (sum == 10)
-            {
-                explode = true;
+            explode = (sum == 10);
+            deselect = sum > 10;
+            if (deselect)
                 break;
-            }
         }
     }
     
-    if (explode)
+    if (deselect)
     {
-        NSMutableArray* dI = [[NSMutableArray alloc] init];
+        for (NumberBubble* b in bubbles)
+        {
+            if (bubbles.firstObject == b) [b playWarnSound];
+            [b setSelected:false];
+        }
+        onExplode = false;
+    }
+    else if (explode)
+    {
+        //NSMutableArray* dI = [[NSMutableArray alloc] init];
         for (NumberBubble *b in bubbles)
         {
-            if (b.isSelected)
+            if (b.isSelected && !b.isRemoved)
             {
+                b.isRemoved = true;
+                [b playWhoopSound];
                 //[dI addObject:b];
                 [b runAction:[SKAction scaleBy:0.1 duration:0.5] completion:^
                  {
                      [bubbles removeObject:b];
                      [b removeFromParent];
                      onExplode = false;
+                     
+                     score += 0.1 * ((100.0 / b.size.width) * 10 / levelIntervalInSeconds);
+                     [self drawScore];
                  }];
             }
         }
@@ -222,12 +300,37 @@ NSMutableArray* bubbles;
         onExplode=false;
 }
 
+-(void)checkGameOver
+{
+    //float frameW = CGRectGetWidth(self.frame);
+    float frameH = CGRectGetHeight(self.frame);
+    
+    for (NumberBubble* b in bubbles) {
+        if (b.position.y>frameH - yMargin - b.size.height/2)
+        {
+            [self gameOver];
+            return;
+        }
+        else if (b.position.y>frameH*0.75 - yMargin - b.size.height/2)
+        {
+            [b playWarnSound];
+        }
+    }
+}
+
+-(void)gameOver
+{
+    gameOver = true;
+    [self createBackgroundEndMusic];
+}
+
 -(void)startGame
 {
     onMenu = false;
+    gameOver = false;
     [self removeMenu];
     [self createBucket];
-    
+    [self drawScore];
     //bubbles = [[NSMutableArray alloc] init];
 }
 
@@ -237,9 +340,7 @@ NSMutableArray* bubbles;
     [self createBackground];
     [self createBackgroundMusic];
     [self createMenu];
-    
     bubbles = [[NSMutableArray alloc] init];
-    
     self.physicsWorld.contactDelegate = self;
 }
 
@@ -277,6 +378,7 @@ NSMutableArray* bubbles;
     {
         if (updatedTime == 0 || currentTime - updatedTime > levelIntervalInSeconds)
         {
+            [self checkGameOver];
             [self addNumber];
             [self removeOutOfScreenBubbles];
             updatedTime=currentTime;

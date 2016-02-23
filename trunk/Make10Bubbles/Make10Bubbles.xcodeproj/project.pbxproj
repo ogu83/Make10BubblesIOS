@@ -26,6 +26,7 @@
 		AD2F45F91C7C7A9400B43A0D /* drop-ball-in-cup-2_GSM.wav in Resources */ = {isa = PBXBuildFile; fileRef = AD2F45F51C7C7A9400B43A0D /* drop-ball-in-cup-2_GSM.wav */; };
 		AD2F45FA1C7C7A9400B43A0D /* FUN_FUN_LK1_GSM.wav in Resources */ = {isa = PBXBuildFile; fileRef = AD2F45F61C7C7A9400B43A0D /* FUN_FUN_LK1_GSM.wav */; };
 		AD2F45FB1C7C7A9400B43A0D /* FUN_FUN_MIN_GSM.wav in Resources */ = {isa = PBXBuildFile; fileRef = AD2F45F71C7C7A9400B43A0D /* FUN_FUN_MIN_GSM.wav */; };
+		AD2F45FD1C7CB78500B43A0D /* slow-whoop-bubble-pop1_GSM.wav in Resources */ = {isa = PBXBuildFile; fileRef = AD2F45FC1C7CB78500B43A0D /* slow-whoop-bubble-pop1_GSM.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +77,7 @@
 		AD2F45F51C7C7A9400B43A0D /* drop-ball-in-cup-2_GSM.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "drop-ball-in-cup-2_GSM.wav"; sourceTree = "<group>"; };
 		AD2F45F61C7C7A9400B43A0D /* FUN_FUN_LK1_GSM.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = FUN_FUN_LK1_GSM.wav; sourceTree = "<group>"; };
 		AD2F45F71C7C7A9400B43A0D /* FUN_FUN_MIN_GSM.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = FUN_FUN_MIN_GSM.wav; sourceTree = "<group>"; };
+		AD2F45FC1C7CB78500B43A0D /* slow-whoop-bubble-pop1_GSM.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "slow-whoop-bubble-pop1_GSM.wav"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,6 +176,7 @@
 		AD2F45E31C7BCAA800B43A0D /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				AD2F45FC1C7CB78500B43A0D /* slow-whoop-bubble-pop1_GSM.wav */,
 				AD2F45F41C7C7A9400B43A0D /* catspaw64_warning-signal_GSM.wav */,
 				AD2F45F51C7C7A9400B43A0D /* drop-ball-in-cup-2_GSM.wav */,
 				AD2F45F61C7C7A9400B43A0D /* FUN_FUN_LK1_GSM.wav */,
@@ -307,6 +310,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD2F45B51C7BC89F00B43A0D /* GameScene.sks in Resources */,
+				AD2F45FD1C7CB78500B43A0D /* slow-whoop-bubble-pop1_GSM.wav in Resources */,
 				AD2F45F91C7C7A9400B43A0D /* drop-ball-in-cup-2_GSM.wav in Resources */,
 				AD2F45C01C7BC89F00B43A0D /* LaunchScreen.storyboard in Resources */,
 				AD2F45EB1C7BCADA00B43A0D /* bouncing-ball_GSM.wav in Resources */,
