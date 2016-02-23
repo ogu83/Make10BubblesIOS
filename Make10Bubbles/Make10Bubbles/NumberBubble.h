@@ -14,9 +14,13 @@
 
 @property int no;
 @property bool isSelected;
+@property bool isRemoved;
 
 -(void) setSelected :(BOOL)isSelected;
 -(void) click;
+-(void) playClickSound;
 -(void) playHitSound;
+-(void) playWhoopSound;
+-(void) playWarnSound;
 
 @end
