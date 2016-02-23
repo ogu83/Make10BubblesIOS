@@ -17,5 +17,6 @@
 
 -(void) setSelected :(BOOL)isSelected;
 -(void) click;
+-(void) playHitSound;
 
 @end
