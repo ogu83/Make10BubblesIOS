@@ -10,7 +10,7 @@
 #import "GameViewController.h"
 #import "MenuButton.h"
 
-@interface GameScene : SKScene
+@interface GameScene : SKScene<SKPhysicsContactDelegate>
 
 @property GameViewController* viewController;
 

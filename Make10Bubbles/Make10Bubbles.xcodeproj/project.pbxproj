@@ -20,9 +20,12 @@
 		AD2F45EA1C7BCADA00B43A0D /* applause-01_GSM.wav in Resources */ = {isa = PBXBuildFile; fileRef = AD2F45E61C7BCADA00B43A0D /* applause-01_GSM.wav */; };
 		AD2F45EB1C7BCADA00B43A0D /* bouncing-ball_GSM.wav in Resources */ = {isa = PBXBuildFile; fileRef = AD2F45E71C7BCADA00B43A0D /* bouncing-ball_GSM.wav */; };
 		AD2F45EC1C7BCADA00B43A0D /* button-3_GSM.wav in Resources */ = {isa = PBXBuildFile; fileRef = AD2F45E81C7BCADA00B43A0D /* button-3_GSM.wav */; };
-		AD2F45ED1C7BCADA00B43A0D /* SKYX_LV_GSM.wav in Resources */ = {isa = PBXBuildFile; fileRef = AD2F45E91C7BCADA00B43A0D /* SKYX_LV_GSM.wav */; };
 		AD2F45F01C7BCEBA00B43A0D /* MenuButton.m in Sources */ = {isa = PBXBuildFile; fileRef = AD2F45EF1C7BCEBA00B43A0D /* MenuButton.m */; };
 		AD2F45F31C7BE5E400B43A0D /* NumberBubble.m in Sources */ = {isa = PBXBuildFile; fileRef = AD2F45F21C7BE5E400B43A0D /* NumberBubble.m */; };
+		AD2F45F81C7C7A9400B43A0D /* catspaw64_warning-signal_GSM.wav in Resources */ = {isa = PBXBuildFile; fileRef = AD2F45F41C7C7A9400B43A0D /* catspaw64_warning-signal_GSM.wav */; };
+		AD2F45F91C7C7A9400B43A0D /* drop-ball-in-cup-2_GSM.wav in Resources */ = {isa = PBXBuildFile; fileRef = AD2F45F51C7C7A9400B43A0D /* drop-ball-in-cup-2_GSM.wav */; };
+		AD2F45FA1C7C7A9400B43A0D /* FUN_FUN_LK1_GSM.wav in Resources */ = {isa = PBXBuildFile; fileRef = AD2F45F61C7C7A9400B43A0D /* FUN_FUN_LK1_GSM.wav */; };
+		AD2F45FB1C7C7A9400B43A0D /* FUN_FUN_MIN_GSM.wav in Resources */ = {isa = PBXBuildFile; fileRef = AD2F45F71C7C7A9400B43A0D /* FUN_FUN_MIN_GSM.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,11 +68,14 @@
 		AD2F45E61C7BCADA00B43A0D /* applause-01_GSM.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "applause-01_GSM.wav"; sourceTree = "<group>"; };
 		AD2F45E71C7BCADA00B43A0D /* bouncing-ball_GSM.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "bouncing-ball_GSM.wav"; sourceTree = "<group>"; };
 		AD2F45E81C7BCADA00B43A0D /* button-3_GSM.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "button-3_GSM.wav"; sourceTree = "<group>"; };
-		AD2F45E91C7BCADA00B43A0D /* SKYX_LV_GSM.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = SKYX_LV_GSM.wav; sourceTree = "<group>"; };
 		AD2F45EE1C7BCEBA00B43A0D /* MenuButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuButton.h; sourceTree = "<group>"; };
 		AD2F45EF1C7BCEBA00B43A0D /* MenuButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuButton.m; sourceTree = "<group>"; };
 		AD2F45F11C7BE5E400B43A0D /* NumberBubble.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberBubble.h; sourceTree = "<group>"; };
 		AD2F45F21C7BE5E400B43A0D /* NumberBubble.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberBubble.m; sourceTree = "<group>"; };
+		AD2F45F41C7C7A9400B43A0D /* catspaw64_warning-signal_GSM.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "catspaw64_warning-signal_GSM.wav"; sourceTree = "<group>"; };
+		AD2F45F51C7C7A9400B43A0D /* drop-ball-in-cup-2_GSM.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "drop-ball-in-cup-2_GSM.wav"; sourceTree = "<group>"; };
+		AD2F45F61C7C7A9400B43A0D /* FUN_FUN_LK1_GSM.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = FUN_FUN_LK1_GSM.wav; sourceTree = "<group>"; };
+		AD2F45F71C7C7A9400B43A0D /* FUN_FUN_MIN_GSM.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = FUN_FUN_MIN_GSM.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,10 +174,13 @@
 		AD2F45E31C7BCAA800B43A0D /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				AD2F45F41C7C7A9400B43A0D /* catspaw64_warning-signal_GSM.wav */,
+				AD2F45F51C7C7A9400B43A0D /* drop-ball-in-cup-2_GSM.wav */,
+				AD2F45F61C7C7A9400B43A0D /* FUN_FUN_LK1_GSM.wav */,
+				AD2F45F71C7C7A9400B43A0D /* FUN_FUN_MIN_GSM.wav */,
 				AD2F45E61C7BCADA00B43A0D /* applause-01_GSM.wav */,
 				AD2F45E71C7BCADA00B43A0D /* bouncing-ball_GSM.wav */,
 				AD2F45E81C7BCADA00B43A0D /* button-3_GSM.wav */,
-				AD2F45E91C7BCADA00B43A0D /* SKYX_LV_GSM.wav */,
 			);
 			name = Sounds;
 			sourceTree = "<group>";
@@ -298,13 +307,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD2F45B51C7BC89F00B43A0D /* GameScene.sks in Resources */,
-				AD2F45ED1C7BCADA00B43A0D /* SKYX_LV_GSM.wav in Resources */,
+				AD2F45F91C7C7A9400B43A0D /* drop-ball-in-cup-2_GSM.wav in Resources */,
 				AD2F45C01C7BC89F00B43A0D /* LaunchScreen.storyboard in Resources */,
 				AD2F45EB1C7BCADA00B43A0D /* bouncing-ball_GSM.wav in Resources */,
 				AD2F45EA1C7BCADA00B43A0D /* applause-01_GSM.wav in Resources */,
 				AD2F45BD1C7BC89F00B43A0D /* Assets.xcassets in Resources */,
 				AD2F45BB1C7BC89F00B43A0D /* Main.storyboard in Resources */,
+				AD2F45FA1C7C7A9400B43A0D /* FUN_FUN_LK1_GSM.wav in Resources */,
+				AD2F45FB1C7C7A9400B43A0D /* FUN_FUN_MIN_GSM.wav in Resources */,
 				AD2F45EC1C7BCADA00B43A0D /* button-3_GSM.wav in Resources */,
+				AD2F45F81C7C7A9400B43A0D /* catspaw64_warning-signal_GSM.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

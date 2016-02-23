@@ -15,13 +15,13 @@
 int xMargin = 10;
 int yMargin = 40;
 
-float levelIntervalInSeconds = 1;
+float levelIntervalInSeconds = 2;
 CFTimeInterval updatedTime;
 
 bool gamePaused;
 bool gameOver;
 bool onMenu;
-bool onMoveBricksDown;
+bool onExplode;
 
 AVAudioPlayer *player;
 
@@ -46,9 +46,10 @@ NSMutableArray* bubbles;
 
 -(void)createBackgroundMusic
 {
-    NSString *dataPath=[[NSBundle mainBundle] pathForResource:@"SKYX_LV_GSM" ofType:@"wav"];
+    NSString *dataPath=[[NSBundle mainBundle] pathForResource:@"FUN_FUN_MIN_GSM" ofType:@"wav"];
     NSData* musicData = [NSData dataWithContentsOfFile:dataPath];
     player = [[AVAudioPlayer alloc] initWithData:musicData error:nil];
+    player.volume = 0.5;
     player.numberOfLoops=-1;
     [player play];
 }
@@ -147,8 +148,28 @@ NSMutableArray* bubbles;
     [self addChild:rightWall];
 }
 
+-(void)removeOutOfScreenBubbles
+{
+    float frameW = CGRectGetWidth(self.frame);
+    float frameH = CGRectGetHeight(self.frame);
+    
+    NSMutableArray* dI = [[NSMutableArray alloc] init];
+    for (NumberBubble* b in bubbles) {
+        if (b.position.x > frameW || b.position.y > frameH || b.position.x<0 || b.position.y<0)
+        {
+            [dI addObject:b];
+        }
+    }
+    
+    [self removeChildrenInArray:dI];
+    [bubbles removeObjectsInArray:dI];
+}
+
 -(void)addNumber
 {
+    if (onExplode)
+        return;
+    
     float frameW = CGRectGetWidth(self.frame);
     float frameH = CGRectGetHeight(self.frame);
     
@@ -164,6 +185,7 @@ NSMutableArray* bubbles;
 
 -(void)explodeBubbles
 {
+    onExplode = true;
     int sum = 0;
     bool explode = false;
     for (NumberBubble *b in bubbles)
@@ -183,12 +205,21 @@ NSMutableArray* bubbles;
     {
         NSMutableArray* dI = [[NSMutableArray alloc] init];
         for (NumberBubble *b in bubbles)
+        {
             if (b.isSelected)
-                [dI addObject:b];
-        
-        [bubbles removeObjectsInArray:dI];
-        [self removeChildrenInArray:dI];
+            {
+                //[dI addObject:b];
+                [b runAction:[SKAction scaleBy:0.1 duration:0.5] completion:^
+                 {
+                     [bubbles removeObject:b];
+                     [b removeFromParent];
+                     onExplode = false;
+                 }];
+            }
+        }
     }
+    else
+        onExplode=false;
 }
 
 -(void)startGame
@@ -197,7 +228,7 @@ NSMutableArray* bubbles;
     [self removeMenu];
     [self createBucket];
     
-    bubbles = [[NSMutableArray alloc] init];
+    //bubbles = [[NSMutableArray alloc] init];
 }
 
 
@@ -208,6 +239,8 @@ NSMutableArray* bubbles;
     [self createMenu];
     
     bubbles = [[NSMutableArray alloc] init];
+    
+    self.physicsWorld.contactDelegate = self;
 }
 
 -(void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
@@ -245,6 +278,7 @@ NSMutableArray* bubbles;
         if (updatedTime == 0 || currentTime - updatedTime > levelIntervalInSeconds)
         {
             [self addNumber];
+            [self removeOutOfScreenBubbles];
             updatedTime=currentTime;
         }
     }
@@ -252,10 +286,18 @@ NSMutableArray* bubbles;
     {
         if (updatedTime == 0 || currentTime - updatedTime > 0.25)
         {
-            
+            [self addNumber];
             updatedTime=currentTime;
         }
     }
+}
+
+-(void)didBeginContact:(SKPhysicsContact *)contact
+{
+    if ([contact.bodyA.node isKindOfClass:[NumberBubble class]])
+        [((NumberBubble*)(contact.bodyA.node)) playHitSound];
+    else if ([contact.bodyB.node isKindOfClass:[NumberBubble class]])
+        [((NumberBubble*)(contact.bodyB.node)) playHitSound];
 }
 
 @end
