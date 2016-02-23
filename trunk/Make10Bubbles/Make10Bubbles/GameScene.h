@@ -25,4 +25,6 @@
 @property SKSpriteNode *playPauseButton;
 @property SKSpriteNode *gotoMenuButton;
 
+@property SKSpriteNode *infoScreen;
+
 @end
