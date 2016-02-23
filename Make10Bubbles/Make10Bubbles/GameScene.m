@@ -41,6 +41,10 @@ AVAudioPlayer *player;
 
 NSMutableArray* bubbles;
 
+int infoSlideMin = 4;
+int infoSlideMax = 15;
+int infoSlideCurrent = 4;
+
 -(UIImage *)screenShot
 {
     CGSize size = self.size;
@@ -108,7 +112,6 @@ NSMutableArray* bubbles;
 
 -(void)SendHighScoreToServer
 {
-    //TODO: Send It To Server
     UserName = [UserName stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
     UIDevice *device = [UIDevice currentDevice];
     NSString  *deviceId = [[device identifierForVendor]UUIDString];
@@ -541,12 +544,33 @@ NSMutableArray* bubbles;
 }
 -(void)giveHint
 {
+    int makeWhat = 10;
     for (NumberBubble* b in bubbles) {
         for (NumberBubble* bb in bubbles) {
-            if (bb.no+b.no == 10) {
+            if (bb == b) continue;
+            if (bb.no+b.no == makeWhat) {
                 [bb setHint:true];
                 [b setHint:true];
                 return;
+            }
+            for (NumberBubble* bbb in bubbles) {
+                if (bbb == bb || bbb == b) continue;
+                if (bbb.no+bb.no+b.no == makeWhat) {
+                    [bbb setHint:true];
+                    [bb setHint:true];
+                    [b setHint:true];
+                    return;
+                }
+                for (NumberBubble* bbbb in bubbles) {
+                    if (bbbb == bbb || bbbb == bb || bbbb == b) continue;
+                    if (bbbb.no+bbb.no+bb.no+b.no == makeWhat) {
+                        [bbbb setHint:true];
+                        [bbb setHint:true];
+                        [bb setHint:true];
+                        [b setHint:true];
+                        return;
+                    }
+                }
             }
         }
     }
@@ -569,7 +593,7 @@ NSMutableArray* bubbles;
     bubbleRadiusDivider = 6;
     levelIntervalInSeconds = 3;
     score=0;
-    nextLevelScore = 1;
+    nextLevelScore = 100;
     onScoreAction = false;
     hintsEnabled = true;
     hintCountDown = 5;
@@ -672,6 +696,32 @@ NSMutableArray* bubbles;
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString: link]];
             return;
         }
+        else if (node == _infoButton)
+        {
+            float frameW = CGRectGetWidth(self.frame);
+            float frameH = CGRectGetHeight(self.frame);
+            infoSlideCurrent = infoSlideMin;
+            _infoScreen = [SKSpriteNode spriteNodeWithImageNamed:[NSString stringWithFormat:@"Slide%d",infoSlideCurrent]];
+            _infoScreen.position = CGPointMake(frameW/2, frameH/2);
+            _infoScreen.size = CGSizeMake(frameW, frameH);
+            [_infoScreen setZPosition:99];
+            [self addChild:_infoScreen];
+            return;
+        }
+        else if (node == _infoScreen)
+        {
+            infoSlideCurrent++;
+            if (infoSlideCurrent<=infoSlideMax)
+            {
+                SKAction* changeSlideAction = [SKAction setTexture:[SKTexture textureWithImageNamed:[NSString stringWithFormat:@"Slide%d",infoSlideCurrent]]];
+                [_infoScreen runAction:changeSlideAction];
+            }
+            else
+            {
+                [_infoScreen removeFromParent];
+                _infoScreen = nil;
+            }
+        }
     }
     else
     {
@@ -744,7 +794,8 @@ NSMutableArray* bubbles;
     {
         if (updatedTime == 0 || currentTime - updatedTime > 0.25)
         {
-            [self addNumber];
+            if (_infoScreen == nil)
+                [self addNumber];
             updatedTime=currentTime;
         }
     }
