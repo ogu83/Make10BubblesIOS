@@ -27,6 +27,8 @@
 		AD2F45FB1C7C7A9400B43A0D /* FUN_FUN_MIN_GSM.wav in Resources */ = {isa = PBXBuildFile; fileRef = AD2F45F71C7C7A9400B43A0D /* FUN_FUN_MIN_GSM.wav */; };
 		AD2F45FD1C7CB78500B43A0D /* slow-whoop-bubble-pop1_GSM.wav in Resources */ = {isa = PBXBuildFile; fileRef = AD2F45FC1C7CB78500B43A0D /* slow-whoop-bubble-pop1_GSM.wav */; };
 		AD2F46021C7CE51F00B43A0D /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = AD2F46011C7CE51F00B43A0D /* Constants.m */; };
+		AD2F46041C7CF5E900B43A0D /* LaunchImageIphone5.png in Resources */ = {isa = PBXBuildFile; fileRef = AD2F46031C7CF5E900B43A0D /* LaunchImageIphone5.png */; };
+		AD2F46061C7CF61600B43A0D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD2F46051C7CF61600B43A0D /* Images.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +81,8 @@
 		AD2F45FC1C7CB78500B43A0D /* slow-whoop-bubble-pop1_GSM.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "slow-whoop-bubble-pop1_GSM.wav"; sourceTree = "<group>"; };
 		AD2F46001C7CE51F00B43A0D /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		AD2F46011C7CE51F00B43A0D /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
+		AD2F46031C7CF5E900B43A0D /* LaunchImageIphone5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LaunchImageIphone5.png; sourceTree = "<group>"; };
+		AD2F46051C7CF61600B43A0D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +133,7 @@
 		AD2F45AA1C7BC89F00B43A0D /* Make10Bubbles */ = {
 			isa = PBXGroup;
 			children = (
+				AD2F46031C7CF5E900B43A0D /* LaunchImageIphone5.png */,
 				AD2F45E51C7BCABB00B43A0D /* Helpers */,
 				AD2F45E41C7BCAB600B43A0D /* Sprites */,
 				AD2F45E31C7BCAA800B43A0D /* Sounds */,
@@ -143,6 +148,7 @@
 				AD2F45BC1C7BC89F00B43A0D /* Assets.xcassets */,
 				AD2F45BE1C7BC89F00B43A0D /* LaunchScreen.storyboard */,
 				AD2F45C11C7BC89F00B43A0D /* Info.plist */,
+				AD2F46051C7CF61600B43A0D /* Images.xcassets */,
 				AD2F45AB1C7BC89F00B43A0D /* Supporting Files */,
 			);
 			path = Make10Bubbles;
@@ -275,6 +281,7 @@
 				TargetAttributes = {
 					AD2F45A71C7BC89F00B43A0D = {
 						CreatedOnToolsVersion = 7.2.1;
+						DevelopmentTeam = UNJW8DELNK;
 					};
 					AD2F45C51C7BC89F00B43A0D = {
 						CreatedOnToolsVersion = 7.2.1;
@@ -314,10 +321,12 @@
 				AD2F45B51C7BC89F00B43A0D /* GameScene.sks in Resources */,
 				AD2F45FD1C7CB78500B43A0D /* slow-whoop-bubble-pop1_GSM.wav in Resources */,
 				AD2F45F91C7C7A9400B43A0D /* drop-ball-in-cup-2_GSM.wav in Resources */,
+				AD2F46061C7CF61600B43A0D /* Images.xcassets in Resources */,
 				AD2F45C01C7BC89F00B43A0D /* LaunchScreen.storyboard in Resources */,
 				AD2F45EA1C7BCADA00B43A0D /* applause-01_GSM.wav in Resources */,
 				AD2F45BD1C7BC89F00B43A0D /* Assets.xcassets in Resources */,
 				AD2F45BB1C7BC89F00B43A0D /* Main.storyboard in Resources */,
+				AD2F46041C7CF5E900B43A0D /* LaunchImageIphone5.png in Resources */,
 				AD2F45FA1C7C7A9400B43A0D /* FUN_FUN_LK1_GSM.wav in Resources */,
 				AD2F45FB1C7C7A9400B43A0D /* FUN_FUN_MIN_GSM.wav in Resources */,
 				AD2F45EC1C7BCADA00B43A0D /* button-3_GSM.wav in Resources */,
@@ -493,6 +502,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = Make10Bubbles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -505,6 +516,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = Make10Bubbles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
