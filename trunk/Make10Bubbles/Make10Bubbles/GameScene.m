@@ -27,8 +27,10 @@ bool onExplode;
 
 SKLabelNode* scoreLabel;
 int score;
-int nextLevelScore = 2;
+int nextLevelScore = 100;
 bool onScoreAction = false;
+bool hintsEnabled = true;
+int hintCountDown = 5;
 
 AVAudioPlayer *player;
 
@@ -169,9 +171,9 @@ NSMutableArray* bubbles;
     if (!onScoreAction)
     {
         onScoreAction = true;
-        [scoreLabel runAction: [SKAction scaleBy:1.1 duration:0.25] completion:^{
+        [scoreLabel runAction: [SKAction scaleBy:110.0/100 duration:0.25] completion:^{
             scoreLabel.text = [NSString stringWithFormat:@"Score: %d", score];
-            [scoreLabel runAction: [SKAction scaleBy:0.9 duration:0.25] completion:^{ onScoreAction = false;
+            [scoreLabel runAction: [SKAction scaleBy:100.0/110.0 duration:0.25] completion:^{ onScoreAction = false;
             }];
         }];
     }
@@ -229,6 +231,17 @@ NSMutableArray* bubbles;
     [bubbles removeObjectsInArray:dI];
 }
 
+-(float)averageBubble
+{
+    float average = 0;
+    float sum = 0;
+    for (NumberBubble* b in bubbles) {
+        sum += b.no;
+    }
+    average = sum/bubbles.count;
+    return average;
+}
+
 -(void)addNumber
 {
     if (onExplode)
@@ -238,7 +251,12 @@ NSMutableArray* bubbles;
     float frameH = CGRectGetHeight(self.frame);
     
     float nW = frameW / ((float)arc4random_uniform(10 * bubbleRadiusDivider)/10 +bubbleRadiusMinDivider);
-    int no = arc4random_uniform(9)+1;
+    
+    int no=5;
+    if ([self averageBubble] > 5)
+        no = arc4random_uniform(5)+1;
+    else
+        no = arc4random_uniform(5)+5;
     
     NumberBubble* number = [NumberBubble GetNumber:no :nW];
     number.position = CGPointMake(xMargin+nW/2+arc4random_uniform(frameW-2*xMargin-nW), frameH-yMargin-nW/2);
@@ -324,6 +342,28 @@ NSMutableArray* bubbles;
     [self createBackgroundEndMusic];
 }
 
+-(void)checkHint
+{
+    hintCountDown--;
+    hintCountDown = MAX(0,hintCountDown);
+    if (hintCountDown < 1)
+    {
+        [self giveHint];
+    }
+}
+-(void)giveHint
+{
+    for (NumberBubble* b in bubbles) {
+        for (NumberBubble* bb in bubbles) {
+            if (bb.no+b.no == 10) {
+                [bb setHint:true];
+                [b setHint:true];
+                return;
+            }
+        }
+    }
+}
+
 -(void)startGame
 {
     onMenu = false;
@@ -367,6 +407,7 @@ NSMutableArray* bubbles;
         {
             NumberBubble* nb = (NumberBubble*)node;
             [nb click];
+            hintCountDown = nextLevelScore / 20;
             [self explodeBubbles];
         }
     }
@@ -381,6 +422,7 @@ NSMutableArray* bubbles;
             [self checkGameOver];
             [self addNumber];
             [self removeOutOfScreenBubbles];
+            [self checkHint];
             updatedTime=currentTime;
         }
     }
