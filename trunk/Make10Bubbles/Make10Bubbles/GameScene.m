@@ -6,9 +6,12 @@
 //  Copyright (c) 2016 Oguz Koroglu. All rights reserved.
 //
 
+#import "Constants.h"
 #import "GameScene.h"
 #import "NumberBubble.h"
 #import <AVFoundation/AVFoundation.h>
+#import <Social/Social.h>
+//#import <FacebookSDK/FacebookSDK.h>
 
 @implementation GameScene
 
@@ -20,14 +23,16 @@ float bubbleRadiusDivider = 6;
 float levelIntervalInSeconds = 3;
 CFTimeInterval updatedTime;
 
-bool gamePaused;
-bool gameOver;
-bool onMenu;
-bool onExplode;
+bool gamePaused=false;
+bool gameOver=false;
+bool onMenu=true;
+bool onExplode=false;
+bool isSoundOn = true;
 
+NSString* UserName;
 SKLabelNode* scoreLabel;
 int score;
-int nextLevelScore = 100;
+int nextLevelScore = 1;
 bool onScoreAction = false;
 bool hintsEnabled = true;
 int hintCountDown = 5;
@@ -35,6 +40,115 @@ int hintCountDown = 5;
 AVAudioPlayer *player;
 
 NSMutableArray* bubbles;
+
+-(UIImage *)screenShot
+{
+    CGSize size = self.size;
+    //CGSize size = CGSizeMake(your_width, your_height);
+    
+    UIGraphicsBeginImageContextWithOptions(size, NO, [UIScreen mainScreen].scale);
+    
+    CGRect rec = CGRectMake(0, 0, size.width, size.height);
+    [_viewController.view drawViewHierarchyInRect:rec afterScreenUpdates:YES];
+    
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
+}
+
+- (void)postTo:(NSString*)name
+{
+    SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+    if ([name isEqual:@"Facebook"])
+        controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+    else if ([name isEqual:@"TencentWeibo"])
+        controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTencentWeibo];
+    else if ([name isEqual:@"SinaWeibo"])
+        controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeSinaWeibo];
+    
+    [controller setInitialText: [NSString stringWithFormat:@"Hey, I completed #%@ with score %d", GameName, score]];
+    [controller addURL:[NSURL URLWithString:WebSite]];
+    UIImage* img = [self screenShot];
+    [controller addImage:img];
+    [[self viewController] presentViewController:controller animated:YES completion:^{ }];
+}
+
+-(void)SendHighScoreToServerAlert
+{
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Congratulations"
+                                                        message:[NSString stringWithFormat:@"Great Score: %d. Enter your name to the high score table",score]
+                                                       delegate:self
+                                              cancelButtonTitle:@"Cancel"
+                                              otherButtonTitles:@"OK", nil];
+    alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+    alertView.tag = 124;
+    [alertView show];
+}
+- (void)postToAlert
+{
+    UIAlertView * alert =[[UIAlertView alloc ]
+                          initWithTitle:@"Congratulations"
+                          message:[NSString stringWithFormat:@"You completed %@ with the score: %d. Do you want share the screenshot and score to your friends?", GameName, score]
+                          delegate:self
+                          cancelButtonTitle: @"Nope"
+                          otherButtonTitles: nil];
+    alert.tag = 123;
+    
+    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
+        [alert addButtonWithTitle:@"Twitter"];
+    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
+        [alert addButtonWithTitle:@"Facebook"];
+    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTencentWeibo])
+        [alert addButtonWithTitle:@"TencentWeibo"];
+    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeSinaWeibo])
+        [alert addButtonWithTitle:@"SinaWeibo"];
+    
+    [alert show];
+}
+
+-(void)SendHighScoreToServer
+{
+    //TODO: Send It To Server
+    UserName = [UserName stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
+    UIDevice *device = [UIDevice currentDevice];
+    NSString  *deviceId = [[device identifierForVendor]UUIDString];
+    
+    NSString *post = @"";
+    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    
+    NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
+    NSString* url = [NSString stringWithFormat:@"%@/HighScore?appId=%@&deviceId=%@&name=%@&score=%d",ApiAddress,AppId,deviceId,UserName,score];
+    
+    //NSString* eUrl = url;
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setURL:[NSURL URLWithString:url]];
+    
+    NSLog([NSString stringWithFormat:@"Request URL: %@", url]);
+    //NSLog([NSString stringWithFormat:@"Request EURL: %@", eUrl]);
+    
+    [request setHTTPMethod:@"POST"];
+    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    [request setHTTPBody:postData];
+    
+    //NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+    NSString* responseString =[[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding];
+    NSLog([NSString stringWithFormat:@"Response: %@",responseString]);
+    
+    if(![SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter] &&
+       ![SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook] &&
+       ![SLComposeViewController isAvailableForServiceType:SLServiceTypeTencentWeibo] &&
+       ![SLComposeViewController isAvailableForServiceType:SLServiceTypeSinaWeibo]
+       )
+    {
+        [self gotoMenu];
+    }
+    else
+    {
+        [self postToAlert];
+    }
+}
 
 - (void)createBackground
 {
@@ -83,6 +197,60 @@ NSMutableArray* bubbles;
     player.volume = 0.5;
     //player.numberOfLoops=-1;
     [player play];
+}
+
+- (void)createSoundButton:(bool)isOn
+{
+    //float frameW = CGRectGetWidth(self.frame);
+    float frameH = CGRectGetHeight(self.frame);
+    float ratio = 1;
+    float h = frameH / 16;
+    float w = h * ratio;
+    
+    NSString* imageName = isOn ? @"SoundOn" : @"SoundOff";
+    
+    _soundButton = [SKSpriteNode spriteNodeWithImageNamed:imageName];
+    _soundButton.name = @"soundButton";
+    [_soundButton setSize:CGSizeMake(w, h)];
+    _soundButton.position = CGPointMake(xMargin + w, yMargin - h/2);
+    [_soundButton setZPosition:1];
+    [self addChild:_soundButton];
+}
+
+-(void)createPlayPauseButton:(bool)isPaused
+{
+    //float frameW = CGRectGetWidth(self.frame);
+    float frameH = CGRectGetHeight(self.frame);
+    float ratio = 1;
+    float h = frameH / 16;
+    float w = h * ratio;
+    
+    NSString* imageName = isPaused ? @"PlayButton" : @"PlayButton";
+    
+    _playPauseButton = [SKSpriteNode spriteNodeWithImageNamed:imageName];
+    _playPauseButton.name = @"playPauseButton";
+    [_playPauseButton setSize:CGSizeMake(w, h)];
+    _playPauseButton.position = CGPointMake(_soundButton.size.width + 2*xMargin + w, yMargin - h/2);
+    [_playPauseButton setZPosition:1];
+    [self addChild:_playPauseButton];
+}
+
+-(void)createGotoMenuButton
+{
+    float frameW = CGRectGetWidth(self.frame);
+    float frameH = CGRectGetHeight(self.frame);
+    float ratio = 1;
+    float h = frameH / 16;
+    float w = h * ratio;
+    
+    NSString* imageName = @"Cancel";
+    
+    _gotoMenuButton = [SKSpriteNode spriteNodeWithImageNamed:imageName];
+    _gotoMenuButton.name = @"gotoMenuButton";
+    [_gotoMenuButton setSize:CGSizeMake(w, h)];
+    _gotoMenuButton.position = CGPointMake(frameW - xMargin - w, yMargin - h/2);
+    [_gotoMenuButton setZPosition:1];
+    [self addChild:_gotoMenuButton];
 }
 
 -(void)createMenu
@@ -154,6 +322,16 @@ NSMutableArray* bubbles;
     
     [_exitButton removeFromParent];
 }
+-(void) gotoMenu
+{
+    [self createBackgroundMusic];
+    [self createMenu];
+    [self removeBucket];
+    
+    [_gotoMenuButton removeFromParent];
+    [_soundButton removeFromParent];
+    [_playPauseButton removeFromParent];
+}
 
 -(void)drawScore
 {
@@ -199,19 +377,28 @@ NSMutableArray* bubbles;
     floor.position = CGPointMake(xMargin + floor.size.width/2, floor.size.height/2 + yMargin);
     floor.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:floor.size];
     floor.physicsBody.dynamic = NO;
+    floor.name = @"floor";
     [self addChild:floor];
     
     SKSpriteNode* leftWall = [SKSpriteNode spriteNodeWithColor:[UIColor brownColor] size:CGSizeMake(5, frameH-2*yMargin)];
     leftWall.position = CGPointMake(xMargin + leftWall.size.width/2, leftWall.size.height/2 + yMargin);
     leftWall.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:leftWall.size];
     leftWall.physicsBody.dynamic = NO;
+    leftWall.name = @"leftwall";
     [self addChild:leftWall];
     
     SKSpriteNode* rightWall = [SKSpriteNode spriteNodeWithColor:[UIColor brownColor] size:CGSizeMake(5, frameH-2*yMargin)];
     rightWall.position = CGPointMake(frameW - rightWall.size.width/2 - xMargin, leftWall.size.height/2 + yMargin);
     rightWall.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:rightWall.size];
     rightWall.physicsBody.dynamic = NO;
+    rightWall.name = @"rightwall";
     [self addChild:rightWall];
+}
+-(void)removeBucket
+{
+    [[self childNodeWithName:@"floor"] removeFromParent];
+    [[self childNodeWithName:@"leftwall"] removeFromParent];
+    [[self childNodeWithName:@"rightwall"] removeFromParent];
 }
 
 -(void)removeOutOfScreenBubbles
@@ -340,6 +527,7 @@ NSMutableArray* bubbles;
 {
     gameOver = true;
     [self createBackgroundEndMusic];
+    [self SendHighScoreToServerAlert];
 }
 
 -(void)checkHint
@@ -371,7 +559,20 @@ NSMutableArray* bubbles;
     [self removeMenu];
     [self createBucket];
     [self drawScore];
+
+    [self createSoundButton:isSoundOn];
+    [self createPlayPauseButton:gamePaused];
+    [self createGotoMenuButton];
     //bubbles = [[NSMutableArray alloc] init];
+    
+    bubbleRadiusMinDivider = 4;
+    bubbleRadiusDivider = 6;
+    levelIntervalInSeconds = 3;
+    score=0;
+    nextLevelScore = 1;
+    onScoreAction = false;
+    hintsEnabled = true;
+    hintCountDown = 5;
 }
 
 
@@ -382,6 +583,60 @@ NSMutableArray* bubbles;
     [self createMenu];
     bubbles = [[NSMutableArray alloc] init];
     self.physicsWorld.contactDelegate = self;
+}
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 99)
+    {
+        if (buttonIndex != 0)  // 0 == the cancel button
+        {
+            //home button press programmatically
+            UIApplication *app = [UIApplication sharedApplication];
+            [app performSelector:@selector(suspend)];
+            //wait 2 seconds while app is going background
+            [NSThread sleepForTimeInterval:2.0];
+            //exit app when app is in background
+            exit(0);
+        }
+    }
+    else if (alertView.tag == 98)
+    {
+        if (buttonIndex != 0)  // 0 == the cancel button
+            [self gameOver];
+        else
+        {
+            gamePaused = NO;
+            if (isSoundOn)
+                [player play];
+        }
+    }
+    else if (alertView.tag == 123)
+    {
+        if (buttonIndex == 0)  // 0 == the cancel button
+        {
+            
+        }
+        else
+        {
+            NSString* btnTitle = [alertView buttonTitleAtIndex:buttonIndex];
+            [self postTo:btnTitle];
+        }
+        
+        [self gotoMenu];
+    }
+    else if (alertView.tag == 124)
+    {
+        if (buttonIndex == 0)  // 0 == the cancel button
+        {
+            [self postToAlert];
+        }
+        else
+        {
+            UserName = [alertView textFieldAtIndex:0].text;
+            [self SendHighScoreToServer];
+        }
+    }
 }
 
 -(void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
@@ -400,15 +655,74 @@ NSMutableArray* bubbles;
         {
             [self startGame];
         }
+        else if (node == _exitButton)
+        {
+            [self doExit];
+            return;
+        }
+        else if (node == _reviewButton)
+        {
+            NSString* itunesLink=[NSString stringWithFormat:@"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=%@&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8",AppId];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString: itunesLink]];
+            return;
+        }
+        else if (node == _highScoreButton)
+        {
+            NSString* link=[NSString stringWithFormat:@"%@/HighScore",WebSite];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString: link]];
+            return;
+        }
     }
     else
     {
-        if ([node isKindOfClass:[NumberBubble class]])
+        if ([node.name isEqualToString:@"soundButton"])
         {
-            NumberBubble* nb = (NumberBubble*)node;
-            [nb click];
-            hintCountDown = nextLevelScore / 20;
-            [self explodeBubbles];
+            isSoundOn = !isSoundOn;
+            if (!isSoundOn)
+                [player stop];
+            else
+                [self createBackgroundMusic];
+            
+            [node removeFromParent];
+            [self createSoundButton:isSoundOn];
+            return;
+        }
+        else if ([node.name isEqualToString:@"playPauseButton"])
+        {
+            gamePaused = !gamePaused;
+            if (gamePaused)
+                [player stop];
+            else if (isSoundOn)
+                [player play];
+            
+            [node removeFromParent];
+            [self createPlayPauseButton:gamePaused];
+            return;
+        }
+        else if ([node.name isEqualToString:@"gotoMenuButton"])
+        {
+            gamePaused = YES;
+            [player stop];
+            
+            //show confirmation message to user
+            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"End Game"
+                                                            message:@"Are you leaving?"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"No"
+                                                  otherButtonTitles:@"Yes", nil];
+            alert.tag = 98;
+            [alert show];
+            
+            return;
+        }
+        
+        if (!gamePaused && !gameOver) {
+            if ([node isKindOfClass:[NumberBubble class]]) {
+                NumberBubble* nb = (NumberBubble*)node;
+                [nb click];
+                hintCountDown = nextLevelScore / 20;
+                [self explodeBubbles];
+            }
         }
     }
 }
@@ -442,6 +756,18 @@ NSMutableArray* bubbles;
         [((NumberBubble*)(contact.bodyA.node)) playHitSound];
     else if ([contact.bodyB.node isKindOfClass:[NumberBubble class]])
         [((NumberBubble*)(contact.bodyB.node)) playHitSound];
+}
+
+-(IBAction)doExit
+{
+    //show confirmation message to user
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Exit"
+                                                    message:@"Are you leaving?"
+                                                   delegate:self
+                                          cancelButtonTitle:@"No"
+                                          otherButtonTitles:@"Yes", nil];
+    alert.tag = 99;
+    [alert show];
 }
 
 @end
