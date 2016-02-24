@@ -32,6 +32,7 @@ static bool isWarnSoundPlaying;
     n.physicsBody.categoryBitMask = 1;
     n.physicsBody.contactTestBitMask = 1;
     n.physicsBody.collisionBitMask = 1;
+    n.physicsBody.allowsRotation = false;
     return n;
 }
 

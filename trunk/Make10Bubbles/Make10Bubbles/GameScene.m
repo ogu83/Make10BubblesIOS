@@ -228,7 +228,7 @@ int infoSlideCurrent = 4;
     float h = frameH / 16;
     float w = h * ratio;
     
-    NSString* imageName = isPaused ? @"PlayButton" : @"PlayButton";
+    NSString* imageName = isPaused ? @"PlayButton" : @"PauseButton";
     
     _playPauseButton = [SKSpriteNode spriteNodeWithImageNamed:imageName];
     _playPauseButton.name = @"playPauseButton";
@@ -376,21 +376,23 @@ int infoSlideCurrent = 4;
     float frameW = CGRectGetWidth(self.frame);
     float frameH = CGRectGetHeight(self.frame);
     
-    SKSpriteNode* floor = [SKSpriteNode spriteNodeWithColor:[UIColor brownColor] size:CGSizeMake(frameW - 2 * xMargin, 5)];
+    UIColor* bucketColor = [UIColor colorWithRed:65.0/255.0 green:113.0/255.0 blue:156.0/255.0 alpha:1];
+    
+    SKSpriteNode* floor = [SKSpriteNode spriteNodeWithColor:bucketColor size:CGSizeMake(frameW - 2 * xMargin, 5)];
     floor.position = CGPointMake(xMargin + floor.size.width/2, floor.size.height/2 + yMargin);
     floor.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:floor.size];
     floor.physicsBody.dynamic = NO;
     floor.name = @"floor";
     [self addChild:floor];
     
-    SKSpriteNode* leftWall = [SKSpriteNode spriteNodeWithColor:[UIColor brownColor] size:CGSizeMake(5, frameH-2*yMargin)];
+    SKSpriteNode* leftWall = [SKSpriteNode spriteNodeWithColor:bucketColor size:CGSizeMake(5, frameH-2*yMargin)];
     leftWall.position = CGPointMake(xMargin + leftWall.size.width/2, leftWall.size.height/2 + yMargin);
     leftWall.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:leftWall.size];
     leftWall.physicsBody.dynamic = NO;
     leftWall.name = @"leftwall";
     [self addChild:leftWall];
     
-    SKSpriteNode* rightWall = [SKSpriteNode spriteNodeWithColor:[UIColor brownColor] size:CGSizeMake(5, frameH-2*yMargin)];
+    SKSpriteNode* rightWall = [SKSpriteNode spriteNodeWithColor:bucketColor size:CGSizeMake(5, frameH-2*yMargin)];
     rightWall.position = CGPointMake(frameW - rightWall.size.width/2 - xMargin, leftWall.size.height/2 + yMargin);
     rightWall.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:rightWall.size];
     rightWall.physicsBody.dynamic = NO;
