@@ -40,7 +40,7 @@ static bool isWarnSoundPlaying;
 {
     if (on)
     {
-        [self runAction:[SKAction rotateByAngle:2 duration:0.5]];
+        //[self runAction:[SKAction rotateByAngle:2 duration:0.5]];
         SKAction* shrinkAction = [SKAction scaleBy:110.0/100.0 duration:0.1];
         SKAction* growAction = [SKAction scaleBy:100.0/110.0 duration:0.1];
         [self runAction:shrinkAction completion:^{ [self runAction:growAction completion:^{

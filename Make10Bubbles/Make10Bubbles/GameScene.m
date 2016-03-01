@@ -16,7 +16,7 @@
 @implementation GameScene
 
 int xMargin = 10;
-int yMargin = 40;
+int yMargin = 70;
 
 float bubbleRadiusMinDivider = 4;
 float bubbleRadiusDivider = 6;
@@ -297,14 +297,15 @@ int infoSlideCurrent = 4;
     [_reviewButton setZPosition:9];
     [self addChild:_reviewButton];
     
-    
+    /*
     _exitButton = [MenuButton exitButton];
     _exitButton.position = CGPointMake(frameW-xMargin-menuBtnW/2/2,
                                     frameH-yMargin-menuBtnH/2/2);
     [_exitButton setSize:CGSizeMake(menuBtnW/2, menuBtnH/2)];
     [_exitButton setZPosition:9];
     [self addChild:_exitButton];
-    
+    */
+     
     float duration = 0.5;
     [_playButton setAlpha:0];
     [_infoButton setAlpha:0];
@@ -323,7 +324,7 @@ int infoSlideCurrent = 4;
             [_reviewButton removeFromParent];
     }];}];}];}];
     
-    [_exitButton removeFromParent];
+    //[_exitButton removeFromParent];
 }
 -(void) gotoMenu
 {
@@ -609,6 +610,11 @@ int infoSlideCurrent = 4;
     [self createMenu];
     bubbles = [[NSMutableArray alloc] init];
     self.physicsWorld.contactDelegate = self;
+    
+    float frameW = CGRectGetWidth(self.frame);
+    float frameH = CGRectGetHeight(self.frame);
+    yMargin = frameH / 16;
+    xMargin = frameW / 18;
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -798,6 +804,7 @@ int infoSlideCurrent = 4;
         {
             if (_infoScreen == nil)
                 [self addNumber];
+            [self removeOutOfScreenBubbles];
             updatedTime=currentTime;
         }
     }
