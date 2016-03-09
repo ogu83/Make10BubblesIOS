@@ -28,6 +28,8 @@
 		AD2F46041C7CF5E900B43A0D /* LaunchImageIphone5.png in Resources */ = {isa = PBXBuildFile; fileRef = AD2F46031C7CF5E900B43A0D /* LaunchImageIphone5.png */; };
 		AD2F46061C7CF61600B43A0D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD2F46051C7CF61600B43A0D /* Images.xcassets */; };
 		AD58A3EB1C900721000226AD /* funmin_GSM.wav in Resources */ = {isa = PBXBuildFile; fileRef = AD58A3EA1C900721000226AD /* funmin_GSM.wav */; };
+		AD58A3EE1C90867F000226AD /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD58A3ED1C90867F000226AD /* FBSDKCoreKit.framework */; };
+		AD58A3F01C90869A000226AD /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD58A3EF1C90869A000226AD /* FBSDKShareKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +83,8 @@
 		AD2F46031C7CF5E900B43A0D /* LaunchImageIphone5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LaunchImageIphone5.png; sourceTree = "<group>"; };
 		AD2F46051C7CF61600B43A0D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		AD58A3EA1C900721000226AD /* funmin_GSM.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = funmin_GSM.wav; sourceTree = "<group>"; };
+		AD58A3ED1C90867F000226AD /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		AD58A3EF1C90869A000226AD /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +92,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AD58A3F01C90869A000226AD /* FBSDKShareKit.framework in Frameworks */,
+				AD58A3EE1C90867F000226AD /* FBSDKCoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -111,6 +117,7 @@
 		AD2F459F1C7BC89F00B43A0D = {
 			isa = PBXGroup;
 			children = (
+				AD58A3EC1C908661000226AD /* Frameworks */,
 				AD2F45AA1C7BC89F00B43A0D /* Make10Bubbles */,
 				AD2F45C91C7BC89F00B43A0D /* Make10BubblesTests */,
 				AD2F45D41C7BC89F00B43A0D /* Make10BubblesUITests */,
@@ -209,6 +216,15 @@
 				AD2F46011C7CE51F00B43A0D /* Constants.m */,
 			);
 			name = Helpers;
+			sourceTree = "<group>";
+		};
+		AD58A3EC1C908661000226AD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AD58A3EF1C90869A000226AD /* FBSDKShareKit.framework */,
+				AD58A3ED1C90867F000226AD /* FBSDKCoreKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -505,6 +521,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = /Users/oguzkoroglu/Documents/FacebookSDK2016;
 				INFOPLIST_FILE = Make10Bubbles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -519,6 +540,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = /Users/oguzkoroglu/Documents/FacebookSDK2016;
 				INFOPLIST_FILE = Make10Bubbles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

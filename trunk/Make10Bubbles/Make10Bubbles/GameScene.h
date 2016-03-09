@@ -10,7 +10,10 @@
 #import "GameViewController.h"
 #import "MenuButton.h"
 
-@interface GameScene : SKScene<SKPhysicsContactDelegate>
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKShareKit/FBSDKShareKit.h>
+
+@interface GameScene : SKScene<SKPhysicsContactDelegate,FBSDKSharingDelegate>
 
 @property GameViewController* viewController;
 

@@ -11,6 +11,8 @@
 #import "NumberBubble.h"
 #import <AVFoundation/AVFoundation.h>
 #import <Social/Social.h>
+
+
 //#import <FacebookSDK/FacebookSDK.h>
 
 @implementation GameScene
@@ -62,9 +64,38 @@ int infoSlideCurrent = 4;
 
 - (void)postTo:(NSString*)name
 {
+    UIImage* img = [self screenShot];
+    
     SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
     if ([name isEqual:@"Facebook"])
-        controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+    {
+        if (IS_OS_8_OR_LATER)
+        {
+            FBSDKSharePhoto *photo = [[FBSDKSharePhoto alloc] init];
+            photo.image = img;
+            photo.caption = [NSString stringWithFormat:@"Hey, I completed #%@ with score %d", GameName, score];
+            photo.userGenerated = YES;
+            FBSDKSharePhotoContent *content = [[FBSDKSharePhotoContent alloc] init];
+            content.photos = @[photo];
+            content.contentURL = [NSURL URLWithString:WebSite];
+            
+            //[FBSDKShareDialog showFromViewController:[self viewController] withContent:content delegate:nil];
+            FBSDKShareDialog* dialog = [[FBSDKShareDialog alloc] init];
+            dialog.fromViewController = self.viewController;
+            dialog.shareContent = content;
+            dialog.mode = FBSDKShareDialogModeNative;
+            if (![dialog canShow]) {
+                // fallback presentation when there is no FB app
+                dialog.mode = FBSDKShareDialogModeFeedBrowser;
+            }
+            [dialog show];
+            return;
+        }
+        else
+        {
+            controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+        }
+    }
     else if ([name isEqual:@"TencentWeibo"])
         controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTencentWeibo];
     else if ([name isEqual:@"SinaWeibo"])
@@ -72,7 +103,6 @@ int infoSlideCurrent = 4;
     
     [controller setInitialText: [NSString stringWithFormat:@"Hey, I completed #%@ with score %d", GameName, score]];
     [controller addURL:[NSURL URLWithString:WebSite]];
-    UIImage* img = [self screenShot];
     [controller addImage:img];
     [[self viewController] presentViewController:controller animated:YES completion:^{ }];
 }
