@@ -40,6 +40,18 @@
     b.name = @"ExitButton";
     return b;
 }
++(id)twitterButton
+{
+    MenuButton *b = [MenuButton spriteNodeWithImageNamed:@"twitter_square-512"];
+    b.name = @"TwitterButton";
+    return b;
+}
++(id)facebookButton
+{
+    MenuButton *b = [MenuButton spriteNodeWithImageNamed:@"square-facebook-512"];
+    b.name = @"FacebookButton";
+    return b;
+}
 
 +(float)buttonScaleRatio
 {

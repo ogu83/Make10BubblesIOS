@@ -178,7 +178,7 @@ int infoSlideCurrent = 4;
         player = nil;
     }
     
-    NSString *dataPath=[[NSBundle mainBundle] pathForResource:@"FUN_FUN_MIN_GSM" ofType:@"wav"];
+    NSString *dataPath=[[NSBundle mainBundle] pathForResource:@"funmin_GSM" ofType:@"wav"];
     NSData* musicData = [NSData dataWithContentsOfFile:dataPath];
     player = [[AVAudioPlayer alloc] initWithData:musicData error:nil];
     player.volume = 0.5;
@@ -305,7 +305,23 @@ int infoSlideCurrent = 4;
     [_exitButton setZPosition:9];
     [self addChild:_exitButton];
     */
-     
+    
+    _twitterButton = [MenuButton twitterButton];
+    _twitterButton.position = CGPointMake(frameW-xMargin-menuBtnW/2/2,
+                                       frameH-yMargin-menuBtnH/2/2);
+    [_twitterButton setSize:CGSizeMake(menuBtnW/2, menuBtnH/2)];
+    [_twitterButton setZPosition:9];
+    [self addChild:_twitterButton];
+    
+    
+    _facebookButton = [MenuButton facebookButton];
+    _facebookButton.position = CGPointMake(frameW-2*xMargin-menuBtnW/2/2-_twitterButton.size.width,
+                                          frameH-yMargin-menuBtnH/2/2);
+    [_facebookButton setSize:CGSizeMake(menuBtnW/2, menuBtnH/2)];
+    [_facebookButton setZPosition:9];
+    [self addChild:_facebookButton];
+    
+    
     float duration = 0.5;
     [_playButton setAlpha:0];
     [_infoButton setAlpha:0];
@@ -325,6 +341,9 @@ int infoSlideCurrent = 4;
     }];}];}];}];
     
     //[_exitButton removeFromParent];
+    [_twitterButton removeFromParent];
+    [_facebookButton removeFromParent];
+    
 }
 -(void) gotoMenu
 {
@@ -701,6 +720,18 @@ int infoSlideCurrent = 4;
         else if (node == _highScoreButton)
         {
             NSString* link=[NSString stringWithFormat:@"%@/HighScore",WebSite];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString: link]];
+            return;
+        }
+        else if (node == _twitterButton)
+        {
+            NSString* link=[NSString stringWithFormat:@"%@",TwitterAddress];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString: link]];
+            return;
+        }
+        else if (node == _facebookButton)
+        {
+            NSString* link=[NSString stringWithFormat:@"%@",FacebookAddress];
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString: link]];
             return;
         }

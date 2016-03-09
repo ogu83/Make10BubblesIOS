@@ -13,4 +13,6 @@ extern NSString *const WebSite;
 extern NSString *const GameName;
 extern NSString *const AppId;
 extern NSString *const ApiAddress;
+extern NSString *const TwitterAddress;
+extern NSString *const FacebookAddress;
 @end

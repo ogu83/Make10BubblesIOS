@@ -21,6 +21,9 @@
 @property MenuButton* closeButton;
 @property MenuButton* exitButton;
 
+@property MenuButton* facebookButton;
+@property MenuButton* twitterButton;
+
 @property SKSpriteNode *soundButton;
 @property SKSpriteNode *playPauseButton;
 @property SKSpriteNode *gotoMenuButton;
