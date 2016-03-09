@@ -23,11 +23,11 @@
 		AD2F45F81C7C7A9400B43A0D /* catspaw64_warning-signal_GSM.wav in Resources */ = {isa = PBXBuildFile; fileRef = AD2F45F41C7C7A9400B43A0D /* catspaw64_warning-signal_GSM.wav */; };
 		AD2F45F91C7C7A9400B43A0D /* drop-ball-in-cup-2_GSM.wav in Resources */ = {isa = PBXBuildFile; fileRef = AD2F45F51C7C7A9400B43A0D /* drop-ball-in-cup-2_GSM.wav */; };
 		AD2F45FA1C7C7A9400B43A0D /* FUN_FUN_LK1_GSM.wav in Resources */ = {isa = PBXBuildFile; fileRef = AD2F45F61C7C7A9400B43A0D /* FUN_FUN_LK1_GSM.wav */; };
-		AD2F45FB1C7C7A9400B43A0D /* FUN_FUN_MIN_GSM.wav in Resources */ = {isa = PBXBuildFile; fileRef = AD2F45F71C7C7A9400B43A0D /* FUN_FUN_MIN_GSM.wav */; };
 		AD2F45FD1C7CB78500B43A0D /* slow-whoop-bubble-pop1_GSM.wav in Resources */ = {isa = PBXBuildFile; fileRef = AD2F45FC1C7CB78500B43A0D /* slow-whoop-bubble-pop1_GSM.wav */; };
 		AD2F46021C7CE51F00B43A0D /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = AD2F46011C7CE51F00B43A0D /* Constants.m */; };
 		AD2F46041C7CF5E900B43A0D /* LaunchImageIphone5.png in Resources */ = {isa = PBXBuildFile; fileRef = AD2F46031C7CF5E900B43A0D /* LaunchImageIphone5.png */; };
 		AD2F46061C7CF61600B43A0D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD2F46051C7CF61600B43A0D /* Images.xcassets */; };
+		AD58A3EB1C900721000226AD /* funmin_GSM.wav in Resources */ = {isa = PBXBuildFile; fileRef = AD58A3EA1C900721000226AD /* funmin_GSM.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,12 +75,12 @@
 		AD2F45F41C7C7A9400B43A0D /* catspaw64_warning-signal_GSM.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "catspaw64_warning-signal_GSM.wav"; sourceTree = "<group>"; };
 		AD2F45F51C7C7A9400B43A0D /* drop-ball-in-cup-2_GSM.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "drop-ball-in-cup-2_GSM.wav"; sourceTree = "<group>"; };
 		AD2F45F61C7C7A9400B43A0D /* FUN_FUN_LK1_GSM.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = FUN_FUN_LK1_GSM.wav; sourceTree = "<group>"; };
-		AD2F45F71C7C7A9400B43A0D /* FUN_FUN_MIN_GSM.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = FUN_FUN_MIN_GSM.wav; sourceTree = "<group>"; };
 		AD2F45FC1C7CB78500B43A0D /* slow-whoop-bubble-pop1_GSM.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "slow-whoop-bubble-pop1_GSM.wav"; sourceTree = "<group>"; };
 		AD2F46001C7CE51F00B43A0D /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		AD2F46011C7CE51F00B43A0D /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		AD2F46031C7CF5E900B43A0D /* LaunchImageIphone5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LaunchImageIphone5.png; sourceTree = "<group>"; };
 		AD2F46051C7CF61600B43A0D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		AD58A3EA1C900721000226AD /* funmin_GSM.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = funmin_GSM.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,11 +181,11 @@
 		AD2F45E31C7BCAA800B43A0D /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				AD58A3EA1C900721000226AD /* funmin_GSM.wav */,
 				AD2F45FC1C7CB78500B43A0D /* slow-whoop-bubble-pop1_GSM.wav */,
 				AD2F45F41C7C7A9400B43A0D /* catspaw64_warning-signal_GSM.wav */,
 				AD2F45F51C7C7A9400B43A0D /* drop-ball-in-cup-2_GSM.wav */,
 				AD2F45F61C7C7A9400B43A0D /* FUN_FUN_LK1_GSM.wav */,
-				AD2F45F71C7C7A9400B43A0D /* FUN_FUN_MIN_GSM.wav */,
 				AD2F45E81C7BCADA00B43A0D /* button-3_GSM.wav */,
 			);
 			name = Sounds;
@@ -324,7 +324,7 @@
 				AD2F45BB1C7BC89F00B43A0D /* Main.storyboard in Resources */,
 				AD2F46041C7CF5E900B43A0D /* LaunchImageIphone5.png in Resources */,
 				AD2F45FA1C7C7A9400B43A0D /* FUN_FUN_LK1_GSM.wav in Resources */,
-				AD2F45FB1C7C7A9400B43A0D /* FUN_FUN_MIN_GSM.wav in Resources */,
+				AD58A3EB1C900721000226AD /* funmin_GSM.wav in Resources */,
 				AD2F45EC1C7BCADA00B43A0D /* button-3_GSM.wav in Resources */,
 				AD2F45F81C7C7A9400B43A0D /* catspaw64_warning-signal_GSM.wav in Resources */,
 			);

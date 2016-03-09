@@ -15,6 +15,8 @@
 +(id)highScoreButton;
 +(id)reviewButton;
 +(id)exitButton;
++(id)twitterButton;
++(id)facebookButton;
 
 +(float)buttonScaleRatio;
 
