@@ -279,6 +279,11 @@
 					AD2F45A71C7BC89F00B43A0D = {
 						CreatedOnToolsVersion = 7.2.1;
 						DevelopmentTeam = UNJW8DELNK;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 0;
+							};
+						};
 					};
 					AD2F45C51C7BC89F00B43A0D = {
 						CreatedOnToolsVersion = 7.2.1;
