@@ -15,6 +15,7 @@
 @property int no;
 @property bool isSelected;
 @property bool isRemoved;
+@property bool isHint;
 
 @property (strong, nonatomic) SKAction *hitSound;
 @property (strong, nonatomic) SKAction *whoopSound;

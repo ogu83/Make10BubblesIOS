@@ -47,6 +47,9 @@ int infoSlideMin = 4;
 int infoSlideMax = 15;
 int infoSlideCurrent = 4;
 
+bool demoMode = NO;
+int demoTopScore = 100000;
+
 -(UIImage *)screenShot
 {
     CGSize size = self.size;
@@ -585,6 +588,19 @@ int infoSlideCurrent = 4;
     [self SendHighScoreToServerAlert];
 }
 
+-(void)aiPlay
+{
+    if (!demoMode || demoTopScore < score)
+        return;
+    
+    [self giveHint];
+    for (NumberBubble* b in bubbles) {
+        if (b.isHint)
+            [b click];
+    }
+    [self explodeBubbles];
+}
+
 -(void)checkHint
 {
     hintCountDown--;
@@ -856,6 +872,7 @@ int infoSlideCurrent = 4;
             [self addNumber];
             [self removeOutOfScreenBubbles];
             [self checkHint];
+            [self aiPlay];
             updatedTime=currentTime;
         }
     }

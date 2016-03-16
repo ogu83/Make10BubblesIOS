@@ -38,6 +38,7 @@ static bool isWarnSoundPlaying;
 
 -(void) setHint :(BOOL)on
 {
+    _isHint = on;
     if (on)
     {
         //[self runAction:[SKAction rotateByAngle:2 duration:0.5]];
